@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CsvImport.Database;
 using static System.Console;
 
 namespace CsvImport.Console
@@ -22,7 +23,7 @@ namespace CsvImport.Console
 
             WriteLine($"Importing {files.Count} files...");
 
-            var importer = new Importer();
+            var importer = new Importer(new DbManager());
             importer.Init();
 
             var tasks = files

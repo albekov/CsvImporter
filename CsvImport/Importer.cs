@@ -11,13 +11,19 @@ namespace CsvImport
 {
     public class Importer
     {
+        private readonly IDbManager _dbManager;
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public int BatchSize { get; set; } = 1000;
 
+        public Importer(IDbManager dbManager)
+        {
+            _dbManager = dbManager;
+        }
+
         public void Init()
         {
-            MigrationHelper.InitDatabase();
+            _dbManager.Init();
         }
 
         public async Task<int> ImportAsync(string fileName)
@@ -38,13 +44,13 @@ namespace CsvImport
 
                     if (records.Count >= BatchSize)
                     {
-                        insertedCount += await AddPeoples(records);
+                        insertedCount += await _dbManager.AddRecords(records);
                         records = new List<People>(BatchSize);
                     }
                 }
             }
 
-            insertedCount += await AddPeoples(records);
+            insertedCount += await _dbManager.AddRecords(records);
 
             return insertedCount;
         }
@@ -67,15 +73,6 @@ namespace CsvImport
             return people;
         }
 
-        private static async Task<int> AddPeoples(ICollection<People> records)
-        {
-            using (var context = new Context())
-            {
-                context.Peoples.AddRange(records);
-                await context.SaveChangesAsync();
-                return records.Count;
-            }
-        }
 
         /// <summary>
         /// Determines a text file's encoding by analyzing its byte order mark (BOM).
