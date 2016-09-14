@@ -40,5 +40,12 @@ namespace CsvImport.Database
         /// <param name="people"></param>
         /// <returns></returns>
         Task Update(People people);
+
+        /// <summary>
+        /// Delete record.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task Delete(int id);
     }
 }

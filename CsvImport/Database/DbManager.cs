@@ -86,7 +86,18 @@ namespace CsvImport.Database
                 record.Email = people.Email;
                 record.Phone = people.Phone;
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Delete(int id)
+        {
+            using (var context = new Context())
+            {
+                var record = await context.Peoples.FirstOrDefaultAsync(p => p.Id == id);
+                context.Peoples.Remove(record);
+
+                await context.SaveChangesAsync();
             }
         }
     }
