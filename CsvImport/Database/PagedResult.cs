@@ -6,8 +6,9 @@ namespace CsvImport.Database
     {
         public int Count { get; set; }
         public int Page { get; set; }
-        public int PageSize { get; set; }
+        public int? PageSize { get; set; }
         public int Pages { get; set; }
+        public ICollection<SortingStatement> Sortings { get; set; }
         public ICollection<T> Records { get; set; }
     }
 }

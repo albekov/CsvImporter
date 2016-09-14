@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Query.cs" />
     <Compile Include="Model\CsvHelper.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\IDbManager.cs" />

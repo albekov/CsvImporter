@@ -71,7 +71,7 @@ namespace CsvImport
         /// <returns></returns>
         public async Task<string> ExportAsync()
         {
-            var result = await _dbManager.Load(1, int.MaxValue);
+            var result = await _dbManager.Load();
             return string.Join(Environment.NewLine, result.Records.Select(r => r.ToCsv()));
         }
 

@@ -114,7 +114,7 @@ namespace CsvImport.Wpf.Mvvm
 
             try
             {
-                Result = await _dbManager.Load(_page, PageSize);
+                Result = await _dbManager.Load(new Query(_page, PageSize));
                 UpdatePaging();
                 Loading(false);
             }
@@ -147,6 +147,7 @@ namespace CsvImport.Wpf.Mvvm
             if (!_connected)
                 return;
 
+            _page = Result.Page;
             Prev.Enabled = Result.Page > 1;
             Next.Enabled = Result.Page < Result.Pages;
             PageText = $"Страница {Result?.Page} из {Result?.Pages}. Всего записей: {Result?.Count}";

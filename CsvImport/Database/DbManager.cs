@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
@@ -26,35 +25,19 @@ namespace CsvImport.Database
             }
         }
 
-        public async Task<PagedResult<People>> Load(int page, int pageSize)
+        public async Task<PagedResult<People>> Load(Query query)
         {
+            query = query ?? new Query();
+
             try
             {
                 using (var context = new Context())
                 {
-                    var count = context.Peoples.Count();
+                    IQueryable<People> queryable = context.Peoples;
 
-                    pageSize = Math.Max(10, Math.Min(pageSize, 10000));
+                    var result = await query.Apply(queryable);
 
-                    var pages = (count - 1)/pageSize + 1;
-
-                    page = Math.Max(1, Math.Min(page, pages));
-
-                    var skip = (page - 1)*pageSize;
-
-                    var records = await context.Peoples
-                        .OrderBy(p => p.Id)
-                        .Skip(skip).Take(pageSize)
-                        .ToListAsync();
-
-                    return new PagedResult<People>
-                    {
-                        Count = count,
-                        Page = page,
-                        PageSize = pageSize,
-                        Pages = pages,
-                        Records = records
-                    };
+                    return result;
                 }
             }
             catch (DbException ex)

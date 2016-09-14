@@ -3,7 +3,9 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using CsvImport.Database;
 using CsvImport.Model;
+using CsvImport.Web.ViewModels;
 
 namespace CsvImport.Web.Controllers
 {
@@ -11,10 +13,14 @@ namespace CsvImport.Web.Controllers
     {
         private readonly Importer _importer = new Importer(MvcApplication.DbManager);
 
-        public async Task<ActionResult> Index(int page = 1, int pageSize = 25)
+        public async Task<ActionResult> Index(int page = 1, int pageSize = 25, string sort = null)
         {
-            var records = await MvcApplication.DbManager.Load(page, pageSize);
-            return View(records);
+            var query = new Query(page, pageSize, sort.ParseSortString());
+            var result = await MvcApplication.DbManager.Load(query);
+
+            var vm = new PeopleListViewModel(result);
+
+            return View(vm);
         }
 
         [HttpPost]
@@ -41,26 +47,27 @@ namespace CsvImport.Web.Controllers
             var csv = await _importer.ExportAsync();
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(csv));
             return File(stream, "text/csv", "export.csv");
-    }
+        }
 
-        public async Task<ActionResult> Edit(int id, int page = 1)
+        public async Task<ActionResult> Edit(int id, int page = 1, string sort = "")
         {
             ViewBag.Page = page;
+            ViewBag.SortString = sort;
             var record = await MvcApplication.DbManager.Load(id);
             return View(record);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(People people, int page = 1)
+        public async Task<ActionResult> Edit(People people, int page = 1, string sort = "")
         {
             await MvcApplication.DbManager.Update(people);
-            return RedirectToAction("Index", new {page});
+            return RedirectToAction("Index", new {page, sort});
         }
 
-        public async Task<ActionResult> Delete(int id, int page = 1)
+        public async Task<ActionResult> Delete(int id, int page = 1, string sort = "")
         {
             await MvcApplication.DbManager.Delete(id);
-            return RedirectToAction("Index", new {page});
+            return RedirectToAction("Index", new {page, sort});
         }
     }
 }

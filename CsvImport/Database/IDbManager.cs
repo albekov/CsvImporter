@@ -22,10 +22,9 @@ namespace CsvImport.Database
         /// <summary>
         /// Load records with paging support.
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
-        Task<PagedResult<People>> Load(int page, int pageSize);
+        Task<PagedResult<People>> Load(Query query = null);
 
         /// <summary>
         /// Load record by id.
