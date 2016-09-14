@@ -66,6 +66,21 @@ namespace CsvImport
         }
 
         /// <summary>
+        /// Load records from several CSV files asynchronously.
+        /// </summary>
+        /// <param name="fileNames"></param>
+        /// <returns></returns>
+        public async Task<int[]> ImportAsync(IEnumerable<string> fileNames)
+        {
+            var tasks = fileNames
+                .Select(ImportAsync)
+                .ToList();
+
+            var counts = await Task.WhenAll(tasks);
+            return counts;
+        }
+
+        /// <summary>
         ///     Export records to CSV-formatted string.
         /// </summary>
         /// <returns></returns>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -76,12 +77,13 @@ namespace CsvImport.Wpf.Mvvm
                 Multiselect = true,
                 Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*"
             };
+
             if (dialog.ShowDialog() == true)
             {
                 Loading(status: "Загрузка файлов...");
-                var imported = await _importer.ImportAsync(dialog.FileName);
+                var imported = await _importer.ImportAsync(dialog.FileNames);
                 await LoadRecords();
-                Loading(false, doneStatus: $"Импортировано {imported} записей");
+                Loading(false, doneStatus: $"Импортировано {imported.Sum()} записей");
             }
         }
 
