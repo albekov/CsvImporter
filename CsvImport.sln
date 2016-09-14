@@ -11,10 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvImport.IntegrationTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvImport.Wpf", "CsvImport.Wpf\CsvImport.Wpf.csproj", "{7D39333A-F764-4373-A447-72B16E955B56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvImport.Web", "CsvImport.Web\CsvImport.Web.csproj", "{FEAF0DC8-B5C1-49BF-9C14-FD7F45F609BA}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -36,6 +35,10 @@ Global
 		{7D39333A-F764-4373-A447-72B16E955B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D39333A-F764-4373-A447-72B16E955B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D39333A-F764-4373-A447-72B16E955B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEAF0DC8-B5C1-49BF-9C14-FD7F45F609BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEAF0DC8-B5C1-49BF-9C14-FD7F45F609BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEAF0DC8-B5C1-49BF-9C14-FD7F45F609BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEAF0DC8-B5C1-49BF-9C14-FD7F45F609BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

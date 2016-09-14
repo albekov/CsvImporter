@@ -1,0 +1,81 @@
+﻿@model CsvImport.Database.PagedResult<CsvImport.Model.People>
+
+@{
+    ViewBag.Title = Model.Count + " записей";
+    var hasRecords = Model.Records.Any();
+    var firstPage = Model.Page <= 1;
+    var lastPage = Model.Page >= Model.Pages;
+}
+
+<div class="row">
+    <div class="col-sm-5">
+        <div class="row">
+            <button class="btn btn-default toggle-import"><span class="glyphicon glyphicon-import" aria-hidden="true"></span>&nbsp;Загрузить из CSV</button>
+            @if (hasRecords)
+            {
+                @:&nbsp;
+                <a href="@Url.Action("Export")" class="btn btn-default"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;Сохранить в CSV</a>
+            }
+        </div>
+        @using (Html.BeginForm("Import", "Home", FormMethod.Post, new {enctype = "multipart/form-data", @class = "form-inline import-form"}))
+        {
+            <div class="form-group">
+                <input type="file" name="file" class="form-control"/>
+            </div>
+            <input type="submit" value="Загрузить" class="btn btn-default"/>
+        }
+    </div>
+    @if (hasRecords)
+    {
+        <div class="col-sm-3">
+            <div style="margin: 10px; text-align: center;">
+                <a href="@(firstPage ? "" : Url.Action("Index", new {page = 1}))" class="btn btn-default @(firstPage ? "disabled" : "")">
+                    <span class="glyphicon glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                </a>
+                <a href="@(firstPage ? "" : Url.Action("Index", new {page = Model.Page - 1}))" class="btn btn-default @(firstPage ? "disabled" : "")">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                </a>
+                &nbsp;&nbsp;@Model.Page / @Model.Pages&nbsp;&nbsp;
+                <a href="@(lastPage ? "" : Url.Action("Index", new {page = Model.Page + 1}))" class="btn btn-default @(lastPage ? "disabled" : "")">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                </a>
+                <a href="@(lastPage ? "" : Url.Action("Index", new {page = Model.Pages}))" class="btn btn-default @(lastPage ? "disabled" : "")">
+                    <span class="glyphicon glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@if (hasRecords)
+{
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Дата рождения</th>
+            <th>E-mail</th>
+            <th>Телефон</th>
+            <th style="width: 50px"></th>
+            <th style="width: 50px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var record in Model.Records)
+        {
+            <tr>
+                <td>@record.FullName</td>
+                <td>@record.BirthDate</td>
+                <td>@record.Email</td>
+                <td>@record.Phone</td>
+                <td>@Html.ActionLink("редактировать", "Edit", new {id = record.Id, page = Model.Page})</td>
+                <td>@Html.ActionLink("удалить", "Delete", new {id = record.Id, page = Model.Page})</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>Нет данных</h3>
+}

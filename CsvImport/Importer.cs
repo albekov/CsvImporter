@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -71,7 +72,7 @@ namespace CsvImport
         public async Task<string> ExportAsync()
         {
             var result = await _dbManager.Load(1, int.MaxValue);
-            return string.Join("\n", result.Records.Select(r => r.ToCsv()));
+            return string.Join(Environment.NewLine, result.Records.Select(r => r.ToCsv()));
         }
 
         /// <summary>
