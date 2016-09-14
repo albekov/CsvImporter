@@ -24,7 +24,7 @@ namespace CsvImport.Console
             WriteLine($"Importing {files.Count} files...");
 
             var importer = new Importer(new DbManager());
-            importer.Init();
+            importer.Init().Wait();
 
             var tasks = files
                 .Select(file => ImportFile(importer, file))

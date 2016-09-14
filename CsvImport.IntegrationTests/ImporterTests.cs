@@ -61,7 +61,7 @@ namespace CsvImport.IntegrationTests
         {
             var result = new DbStatistics();
             dbManager
-                .Setup(o => o.AddRecords(It.IsAny<ICollection<People>>()))
+                .Setup(o => o.InsertRecords(It.IsAny<ICollection<People>>()))
                 .Callback<ICollection<People>>(r =>
                 {
                     result.Calls++;

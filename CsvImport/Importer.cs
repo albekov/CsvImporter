@@ -21,11 +21,20 @@ namespace CsvImport
             _dbManager = dbManager;
         }
 
-        public void Init()
+        /// <summary>
+        /// Prepare and migrate database.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Init()
         {
-            _dbManager.Init();
+            await _dbManager.Init();
         }
 
+        /// <summary>
+        /// Load records from CSV file into database.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public async Task<int> ImportAsync(string fileName)
         {
             var records = new List<People>(BatchSize);
@@ -44,13 +53,13 @@ namespace CsvImport
 
                     if (records.Count >= BatchSize)
                     {
-                        insertedCount += await _dbManager.AddRecords(records);
+                        insertedCount += await _dbManager.InsertRecords(records);
                         records = new List<People>(BatchSize);
                     }
                 }
             }
 
-            insertedCount += await _dbManager.AddRecords(records);
+            insertedCount += await _dbManager.InsertRecords(records);
 
             return insertedCount;
         }

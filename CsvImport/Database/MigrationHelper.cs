@@ -1,4 +1,7 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System;
+using System.Data;
+using System.Data.Common;
+using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
 using CsvImport.Migrations;
@@ -12,14 +15,25 @@ namespace CsvImport.Database
 
         public static void InitDatabase()
         {
-            var migrator = new DbMigrator(new Configuration());
-            var decorator = new MigratorLoggingDecorator(migrator, new MigrationHelper());
-            var pendingMigrations = migrator.GetPendingMigrations().ToList();
-
-            if (pendingMigrations.Any())
+            try
             {
-                Log.Info($"Found {pendingMigrations.Count} migrations.");
-                decorator.Update();
+                var migrator = new DbMigrator(new Configuration());
+                var decorator = new MigratorLoggingDecorator(migrator, new MigrationHelper());
+                var pendingMigrations = migrator.GetPendingMigrations().ToList();
+
+                if (pendingMigrations.Any())
+                {
+                    Log.Info($"Found {pendingMigrations.Count} migrations.");
+                    decorator.Update();
+                }
+            }
+            catch (DbException ex)
+            {
+                throw new ImporterDbException(ex.Message);
+            }
+            catch (DataException ex)
+            {
+                throw new ImporterDbException(ex.InnerException?.Message ?? ex.Message);
             }
         }
 

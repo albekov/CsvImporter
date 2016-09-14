@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using CsvImport.Model;
 
 namespace CsvImport.Database
@@ -7,6 +8,7 @@ namespace CsvImport.Database
     {
         public Context() : base("DefaultConnection")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 30;
         }
 
         public DbSet<People> Peoples { get; set; }
