@@ -54,6 +54,8 @@
             {
                 @:&nbsp;
                 <a href="@Url.Action("Export")" class="btn btn-default"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;Сохранить в CSV</a>
+                @:&nbsp;
+                <a href="@Url.Action("RemoveAll")" class="btn btn-default"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;Remove All</a>
             }
         </div>
         @using (Html.BeginForm("Import", "Home", FormMethod.Post, new {enctype = "multipart/form-data", @class = "form-inline import-form"}))
@@ -66,7 +68,7 @@
     </div>
     @if (hasRecords)
     {
-        <div class="col-sm-3">
+        <div class="col-sm-5">
             <div style="margin: 10px; text-align: center;">
                 @Paging(result.Page, result.Pages, sort)
             </div>

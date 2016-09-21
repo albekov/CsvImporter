@@ -114,5 +114,14 @@ namespace CsvImport
             if ((bom[0] == 0) && (bom[1] == 0) && (bom[2] == 0xfe) && (bom[3] == 0xff)) return Encoding.UTF32;
             return Encoding.GetEncoding(1251);
         }
+
+        public async Task RemoveAll()
+        {
+            using (var context = new Context())
+            {
+                context.Peoples.RemoveRange(context.Peoples);
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

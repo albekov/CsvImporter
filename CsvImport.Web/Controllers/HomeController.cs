@@ -49,6 +49,12 @@ namespace CsvImport.Web.Controllers
             return File(stream, "text/csv", "export.csv");
         }
 
+        public async Task<ActionResult> RemoveAll()
+        {
+            await _importer.RemoveAll();
+            return RedirectToAction("Index");
+        }
+
         public async Task<ActionResult> Edit(int id, int page = 1, string sort = "")
         {
             ViewBag.Page = page;
